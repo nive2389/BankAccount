@@ -1,0 +1,9 @@
+insert into ACCOUNT VALUES(585309209, 'SGSavings726', 'Savings', '2012-09-17', 'AUD', 84537.10);
+insert into ACCOUNT VALUES(791066619, 'AUSavings823', 'Savings', '2012-09-11', 'AUD', 88005.93);
+insert into ACCOUNT VALUES(321143048, 'SGCurrent166', 'Current', '2012-09-30', 'SGD', 50764.65);
+insert into ACCOUNT VALUES(347786244, 'AGSavings842', 'Savings', '2012-09-27', 'SGD', 48928.90);
+insert into transaction values(1, 'AUSavings823', '100', 'SGD', '0','null','Credit', '2018-11-08','791066619');
+insert into transaction values(2, 'AUSavings823', '200', 'SGD', '0','null','Credit', '2018-11-08','791066619');
+insert into transaction values(3, 'AUSavings823', '200', 'SGD', '0','null','Credit', '2018-11-08','791066619');
+insert into transaction values(4, 'AGSavings842', '1000', 'SGD', '0','null','Credit', '2018-11-08','347786244');
+insert into transaction values(5, 'AGSavings842', '1200', 'SGD', '0','null','Credit', '2018-11-08','347786244');
