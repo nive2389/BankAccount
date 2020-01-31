@@ -10,7 +10,6 @@ import com.example.demo.entity.TransactionEntity;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Long> {
-	//@Query("select t from Transaction t where t.accountnumber=?1")
-	@Query("SELECT t FROM TransactionEntity t WHERE Account_Number=?1")
+		@Query("SELECT t FROM TransactionEntity t WHERE Account_Number=?1")
 	List<TransactionEntity> findAllByAccountNumber(Long AccountNumber);
 }
