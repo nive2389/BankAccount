@@ -32,9 +32,7 @@ public class AccountServiceTest {
 	public ExpectedException expectedException = ExpectedException.none();
 	@InjectMocks
 	AccountService accountServiceMock;
-	AccountEntity account;
-	String dummyData ="TestUser";
-	Long id=1001L;
+	
 	@Before
 	public void Setup()
 	{
@@ -62,40 +60,5 @@ public class AccountServiceTest {
 			expectedException.expect(CustomException.class);
 			expectedException.expectMessage(UserMessages.NODATAFOUND);
 	 }
-	
-//	@Test
-//	public void testgetAccountService() throws CustomException
-//	{	
-//		AccountEntity account = new AccountEntity();
-//		account = new AccountEntity();
-//		account.setAccountNumber(1010L);
-//		account.setAccountName("EGT-DT");
-//		account.setAccountType("Savings");
-//		account.setBalanceDate(new Date(2019 - 9 - 6));
-//		account.setCurrency("INR");
-//		account.setOpAvailBalance(7891.8);
-//		
-//		when(accountrepo.findById((long) 1001).get()).thenReturn(account);
-//		AccountEntity accdto = accountServiceMock.getAccountDetails(1001L);
-//		assertEquals(dummyData, accdto.getAccountName());
-//		assertThat(accdto.getBalanceDate()).hasSameTimeAs(new Date(2019-20-8));
-//	}
-//	
-//	@Test
-//	public void testgetAccountServiceFalse() throws Exception
-//	{	
-//		try { 
-//		
-//		when(accountrepo.findById(1001L)).thenThrow(CustomException.class);
-//		AccountEntity account = accountServiceMock.getAccountDetails(1001L);
-//		expectedException.expect(CustomException.class);
-//        expectedException.expectMessage(UserMessages.NODATAFOUND);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	
-	
-	
-	//}
 	
 }

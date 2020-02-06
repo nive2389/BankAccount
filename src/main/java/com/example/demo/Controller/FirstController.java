@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.DTO.TransactionDTO;
 import com.example.demo.Exception.CustomException;
+import com.example.demo.Exception.UserMessages;
 import com.example.demo.Service.AccountService;
 import com.example.demo.Service.TransactionService;
 import com.example.demo.entity.AccountEntity;
@@ -30,23 +32,23 @@ public class FirstController {
 	TransactionService transervice;
 
 	@GetMapping("/getallaccountdetails")
-	public List getAllAccountDetails() throws CustomException {
-		logger.info("Get All Account Details Called");
+	public List<AccountEntity> getAllAccountDetails() throws CustomException {
+		logger.info("List of all account details");
 		return accservice.getAllAccountDetails();
 	}
 
 	@GetMapping("/accountdetails")
 	public AccountEntity getAccountDetails(@RequestParam("accountNumber") Long accountNumber) throws CustomException {
-		logger.info("Get Account Details : " + accountNumber);
+		logger.info("Get Account Details of : " + accountNumber);
 		if(accountNumber == null) {
-			throw new IllegalArgumentException("Account Number must not be empty");
+			throw new IllegalArgumentException(UserMessages.ACCOUNTNONOTEMPTY);
 		}
 		return accservice.getAccountDetails(accountNumber);
 	}
 
 	@GetMapping("/transactiondetails")
-	public List getTransactionDetails(@RequestParam("accountNumber") @NotNull Long accountNumber) throws CustomException, ParseException {
-		logger.info("Get transaction Details Called for: " + accountNumber);
+	public List<TransactionDTO> getTransactionDetails(@RequestParam("accountNumber") @NotNull Long accountNumber) throws CustomException, ParseException {
+		logger.info("Get transaction Details for: " + accountNumber);
 		return transervice.getTransactionDetails(accountNumber);
 	}
 

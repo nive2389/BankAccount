@@ -17,7 +17,6 @@ public class TransactionEntity {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "AccountNumber")
 	private AccountEntity account;
-	//@JoinColumn(name = "accountname")
 	private String accoutName;
 	private Date valuedate;
 	private String currency;

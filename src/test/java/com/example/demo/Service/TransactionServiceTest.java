@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -33,24 +34,20 @@ public class TransactionServiceTest {
 	TransactionRepository transrepo;
 	@Mock
 	AccountRepository accountrepo;
-	
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 	@InjectMocks
 	TransactionService transactionServiceMock;
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
+
+	List<TransactionEntity> list;
 	TransactionEntity transaction;
 	AccountEntity account;
 	TransactionDTO td;
-	String dummyData = "TestUser";
-	final static Long accountId = 1001L;
+	final Long accountId = 1001L;
 
 	@Before
 	public void Setup() {
 		MockitoAnnotations.initMocks(this);
-		Transaction();
-	}
-
-	private void Transaction() {
 		account = new AccountEntity();
 		account.setAccountNumber(1001L);
 		account.setAccountName("TestUser");
@@ -59,10 +56,10 @@ public class TransactionServiceTest {
 		account.setCurrency("INR");
 		account.setOpAvailBalance(20000.50);
 
-		// TODO Auto-generated method stub
 		transaction = new TransactionEntity();
 		transaction.setAccount(account);
 		transaction.setId(1001L);
+		transaction.setAccoutName("TestUser");
 		transaction.setTransactiontype("Savings");
 		transaction.setTransactionsummary("Summary");
 		transaction.setCurrency("INR");
@@ -74,12 +71,10 @@ public class TransactionServiceTest {
 
 	@Test
 	public void testgetTransactionService() throws Exception {
-
-		List<TransactionEntity> list = new ArrayList<TransactionEntity>();
+		list = new ArrayList<TransactionEntity>();
 		list.add(transaction);
-
+		when(accountrepo.findById(accountId)).thenReturn(Optional.of(account));
 		when(transrepo.findAllByAccountNumber(accountId)).thenReturn(list);
-
 		List<TransactionDTO> transactionDTO = transactionServiceMock.getTransactionDetails(1001L);
 
 		List<TransactionEntity> transactionList = new ArrayList<TransactionEntity>();
@@ -92,12 +87,20 @@ public class TransactionServiceTest {
 
 	@Test(expected = CustomException.class)
 	public void testgetTransactionServiceFail() throws Exception {
-		when(accountrepo.findById(accountId).isPresent()).thenReturn(true);
-		List<TransactionEntity> list = new ArrayList<TransactionEntity>();
+		when(accountrepo.findById(accountId)).thenReturn(Optional.of(account));
+		list = new ArrayList<TransactionEntity>();
 		when(transrepo.findAllByAccountNumber(accountId)).thenReturn(list);
 		transactionServiceMock.getTransactionDetails(accountId);
 		expectedException.expect(CustomException.class);
 		expectedException.expectMessage(UserMessages.NOTRANSACTIONDONE);
 	}
-	
+
+	@Test(expected = CustomException.class)
+	public void testGetTransactionServiceFail2() throws Exception {
+		when(accountrepo.findById(accountId)).thenReturn(null);
+		transactionServiceMock.getTransactionDetails(10001L);
+		expectedException.expect(CustomException.class);
+		expectedException.expectMessage(UserMessages.ACCOUNTNOTFOUND);
+	}
+
 }
