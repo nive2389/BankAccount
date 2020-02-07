@@ -3,12 +3,18 @@ package com.example.demo.entity;
 import java.sql.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "ACCOUNT")
 public class AccountEntity {
+	
+	@SequenceGenerator(name="accountnumbergenerate", initialValue=1234567890, allocationSize=100)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "accountnumbergenerate")
 	@Id
 	private Long AccountNumber;
 	private String AccountName;

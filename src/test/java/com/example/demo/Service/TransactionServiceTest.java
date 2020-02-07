@@ -97,8 +97,8 @@ public class TransactionServiceTest {
 
 	@Test(expected = CustomException.class)
 	public void testGetTransactionServiceFail2() throws Exception {
-		when(accountrepo.findById(accountId)).thenReturn(null);
-		transactionServiceMock.getTransactionDetails(10001L);
+		when(accountrepo.findById(accountId)).thenReturn(Optional.of(new AccountEntity()));
+		transactionServiceMock.getTransactionDetails(accountId);
 		expectedException.expect(CustomException.class);
 		expectedException.expectMessage(UserMessages.ACCOUNTNOTFOUND);
 	}

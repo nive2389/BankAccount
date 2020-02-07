@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.lang.Nullable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -75,11 +77,6 @@ public class FirstControllerTest {
 
 	@Test(expected = CustomException.class)
 	public void getAllAccountFail() throws CustomException {
-//		 List<AccountEntity> accountList = new ArrayList<AccountEntity>();
-//			when(accServiceMock.getAllAccountDetails()).thenReturn(accountList);
-//			List<AccountEntity> list = firstControllerMock.getAllAccountDetails();
-//		assertTrue(list.isEmpty());
-
 		when(accServiceMock.getAllAccountDetails()).thenThrow(CustomException.class);
 		firstControllerMock.getAllAccountDetails();
 		expectedException.expect(CustomException.class);
@@ -87,7 +84,7 @@ public class FirstControllerTest {
 	}
 
 	@Test
-	public void testTransaction() throws Exception {
+	public void testTransaction() throws CustomException, ParseException{
 		List<TransactionDTO> tdList = new ArrayList();
 		tdList.add(td);
 		when(transServiceMock.getTransactionDetails(1010L)).thenReturn(tdList);
@@ -97,7 +94,7 @@ public class FirstControllerTest {
 	}
 
 	@Test
-	public void testTransactionFail() throws Exception {
+	public void testTransactionFail() throws CustomException {
 
 		try {
 			when(transServiceMock.getTransactionDetails(100L)).thenThrow(CustomException.class);
@@ -111,14 +108,14 @@ public class FirstControllerTest {
 	}
 
 	@Test
-	public void testgetAccount() throws Exception {
+	public void testgetAccount() throws CustomException {
 		when(accServiceMock.getAccountDetails(1010L)).thenReturn(account);
 		AccountEntity response = firstControllerMock.getAccountDetails(1010L);
 		assertThat(response.getAccountName()).isEqualTo(account.getAccountName());
 	}
 
 	@Test
-	public void testgetAccountFail() throws Exception {
+	public void testgetAccountFail1() throws CustomException {
 		try {
 			when(accServiceMock.getAccountDetails(100L)).thenThrow(CustomException.class);
 			firstControllerMock.getAccountDetails(100L);
@@ -129,7 +126,29 @@ public class FirstControllerTest {
 		}
 
 	}
+	
+	@Test
+	public void testgetAccountFail2() throws CustomException {
+		try {
+			firstControllerMock.getAccountDetails(null);
+			expectedException.expect(CustomException.class);
+			expectedException.expectMessage("ACCOUNT NUMBER SHOULD NOT BE EMPTY");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
+	}
+	@Test
+	public void testgetTransactionFail() throws CustomException {
+		try {
+			firstControllerMock.getTransactionDetails(null);
+			expectedException.expect(CustomException.class);
+			expectedException.expectMessage("ACCOUNT NUMBER SHOULD NOT BE EMPTY");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 	public void acc() throws CustomException {
 		account = new AccountEntity();
 		account.setAccountNumber(1010L);

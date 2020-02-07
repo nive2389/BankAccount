@@ -3,6 +3,7 @@ package com.example.demo.Controller;
 import java.text.ParseException;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
@@ -31,14 +32,14 @@ public class FirstController {
 	@Autowired
 	TransactionService transervice;
 
-	@GetMapping("/getallaccountdetails")
+	@GetMapping("/viewaccountdetails")
 	public List<AccountEntity> getAllAccountDetails() throws CustomException {
 		logger.info("List of all account details");
 		return accservice.getAllAccountDetails();
 	}
 
-	@GetMapping("/accountdetails")
-	public AccountEntity getAccountDetails(@RequestParam("accountNumber") Long accountNumber) throws CustomException {
+	@GetMapping("/getaccountdetails")
+	public AccountEntity getAccountDetails(@RequestParam("accountNumber") @NotBlank @NotNull Long accountNumber) throws CustomException {
 		logger.info("Get Account Details of : " + accountNumber);
 		if(accountNumber == null) {
 			throw new IllegalArgumentException(UserMessages.ACCOUNTNONOTEMPTY);
@@ -47,8 +48,11 @@ public class FirstController {
 	}
 
 	@GetMapping("/transactiondetails")
-	public List<TransactionDTO> getTransactionDetails(@RequestParam("accountNumber") @NotNull Long accountNumber) throws CustomException, ParseException {
+	public List<TransactionDTO> getTransactionDetails(@RequestParam("accountNumber") @NotBlank @NotNull Long accountNumber) throws CustomException, ParseException {
 		logger.info("Get transaction Details for: " + accountNumber);
+		if(accountNumber == null) {
+			throw new IllegalArgumentException(UserMessages.ACCOUNTNONOTEMPTY);
+		}
 		return transervice.getTransactionDetails(accountNumber);
 	}
 

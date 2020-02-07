@@ -25,7 +25,7 @@ public class TransactionService {
 	AccountRepository accountrepo;
 
 	public List<TransactionDTO> getTransactionDetails(Long accountNumber) throws CustomException, ParseException {
-		if (accountrepo.findById(accountNumber).isPresent()) {
+		if(accountrepo.findById(accountNumber).isPresent()) {
 			List<TransactionEntity> transDetailslist = transrepo.findAllByAccountNumber(accountNumber);
 			if (transDetailslist.isEmpty()) {
 				logger.error(UserMessages.NOTRANSACTIONDONE + "for given "+ accountNumber);
